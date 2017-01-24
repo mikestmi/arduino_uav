@@ -11,7 +11,11 @@ const uint16_t user = 00;
 const uint16_t uav = 01;
 
 void setup() {
-  // put your setup code here, to run once:
+  SPI.begin();
+  radio.begin();
+  radio.setDataRate(RF24_250KBPS);
+  radio.setPALevel(RF24_PA_MAX);
+  network.begin(108, user);
 
 }
 
