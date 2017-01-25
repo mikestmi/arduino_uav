@@ -9,11 +9,11 @@ RF24 radio(9, 10);
 
 RF24Network network(radio);
 const uint16_t user = 00;
-const uint16_t uav = 01;                                                     
-const uint16_t ground_station_1 = 011;                                                          
+const uint16_t uav = 01;
+const uint16_t ground_station_1 = 011;
 const uint16_t ground_station_2 = 021;
 
-const unsigned long interval = 5000;                                            
+const unsigned long interval = 5000;
 unsigned long last_sent;
 
 void setup() {
@@ -36,5 +36,11 @@ void loop() {
     char c = 'A';
     RF24NetworkHeader header(ground_station_1);
     bool ok = network.multicast(header, c, sizeof(c), 2);
+  }
+
+  if ( network.available() ) {
+    RF24NetworkHeader header;
+    char msg[32] = {0};
+    network.read(header, &msg, sizeof(msg));
   }
 }
