@@ -10,6 +10,13 @@ const uint16_t uav = 01;
 
 int moistPin = A0;
 int moistValue = 0;
+String moistPerc;
+
+int convertToPercent(int value) {
+  int percentValue = 0;
+  percentValue = map(value, 1023, 374, 0, 100);
+  return percentValue;
+}
 
 void setup() {
   SPI.begin();
@@ -24,6 +31,7 @@ void loop() {
   network.update();
 
   moistValue = analogRead(moistPin);
+  moistPerc = convertToPercent(moistValue);
 
   while ( network.available() ) {
     RF24NetworkHeader header;
