@@ -18,6 +18,9 @@ unsigned long last_sent;
 
 DateTime dt(2017, 01, 02, 20, 26, 00, 2);
 
+int CSpin = 8;
+File data;
+
 String getTime() {
 
   String time;
@@ -34,9 +37,19 @@ String getTime() {
   return time;
 }
 
+void saveToSD(String Entry) {
+
+  data = SD.open("LOGDATA.txt", FILE_WRITE);
+
+  if (data) {
+    data.print(Entry);
+    data.close();
+  }
+}
 
 void setup() {
   Wire.begin();
+  SD.begin(CSpin);
   rtc.begin();
   SPI.begin();
   radio.begin();
@@ -66,5 +79,7 @@ void loop() {
 
     String Time = getTime();
     String Entry = Time + " " + msg;
+
+    saveToSD(Entry + "\n");
   }
 }
