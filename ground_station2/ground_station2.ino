@@ -8,6 +8,9 @@ RF24Network network(radio);
 const uint16_t ground_station_2 = 021;
 const uint16_t uav = 01;
 
+int moistPin = A0;
+int moistValue = 0;
+
 void setup() {
   SPI.begin();
   radio.begin();
@@ -19,6 +22,8 @@ void setup() {
 
 void loop() {
   network.update();
+
+  moistValue = analogRead(moistPin);
 
   while ( network.available() ) {
     RF24NetworkHeader header;
