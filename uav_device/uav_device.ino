@@ -9,9 +9,12 @@ RF24 radio(9, 10);
 
 RF24Network network(radio);
 const uint16_t user = 00;
-const uint16_t uav = 01;                                                     // Address of our node in Octal format
-const uint16_t ground_station_1 = 011;                                                          // Address of the other node in Octal format
+const uint16_t uav = 01;                                                     
+const uint16_t ground_station_1 = 011;                                                          
 const uint16_t ground_station_2 = 021;
+
+const unsigned long interval = 5000;                                            
+unsigned long last_sent;
 
 void setup() {
   SPI.begin();
@@ -23,6 +26,15 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  network.update();
 
+  unsigned long now = millis();
+  if ( now - last_sent >= interval  )
+  {
+    last_sent = now;
+
+    char c = 'A';
+    RF24NetworkHeader header(ground_station_1);
+    bool ok = network.multicast(header, c, sizeof(c), 2);
+  }
 }
