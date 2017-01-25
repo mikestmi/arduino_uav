@@ -48,5 +48,12 @@ void loop() {
     RF24NetworkHeader header;
     char c;
     network.read(header, &c, sizeof(c));
+
+    String Entry = moistPerc + "%, " + Status ;
+    int EntryLen = Entry.length() + 1;
+    char msg[EntryLen];
+    Entry.toCharArray(msg, EntryLen);
+    RF24NetworkHeader header1(uav);
+    bool ok = network.write(header1, &msg, sizeof(msg));
   }
 }
