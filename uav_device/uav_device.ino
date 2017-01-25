@@ -16,13 +16,34 @@ const uint16_t ground_station_2 = 021;
 const unsigned long interval = 5000;
 unsigned long last_sent;
 
+DateTime dt(2017, 01, 02, 20, 26, 00, 2);
+
+String getTime() {
+
+  String time;
+  String hour;
+  String minute;
+  String second;
+
+  DateTime now = rtc.now();
+  hour = String(now.hour(), DEC);
+  minute = String(now.minute(), DEC);
+  second = String(now.second(), DEC);
+
+  time = hour + ":" + minute + ":" + second;
+  return time;
+}
+
+
 void setup() {
+  Wire.begin();
+  rtc.begin();
   SPI.begin();
   radio.begin();
   radio.setDataRate(RF24_250KBPS);
   radio.setPALevel(RF24_PA_MAX);
   network.begin(108, uav);
-
+  //rtc.setDateTime(dt);
 }
 
 void loop() {
@@ -42,5 +63,8 @@ void loop() {
     RF24NetworkHeader header;
     char msg[32] = {0};
     network.read(header, &msg, sizeof(msg));
+
+    String Time = getTime();
+    String Entry = Time + " " + msg;
   }
 }
