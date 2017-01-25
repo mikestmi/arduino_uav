@@ -20,6 +20,11 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  network.update();
 
+  while ( network.available() ) {
+    RF24NetworkHeader header;
+    char msg[32] = {0};
+    network.read(header, &msg, sizeof(msg));
+  }
 }
