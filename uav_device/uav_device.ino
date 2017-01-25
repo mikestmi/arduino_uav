@@ -81,5 +81,11 @@ void loop() {
     String Entry = Time + " " + msg;
 
     saveToSD(Entry + "\n");
+
+    int EntryLen = Entry.length() + 1;
+    char txt[EntryLen];
+    Entry.toCharArray(txt, EntryLen);
+    RF24NetworkHeader header1(user);
+    network.write(header1, &txt, sizeof(txt));
   }
 }
