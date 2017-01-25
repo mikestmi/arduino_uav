@@ -35,5 +35,11 @@ void loop() {
     humidity = String(DHT.humidity, 0);
     temperature = String(DHT.temperature, 0);
     String Entry = temperature + "C," + humidity + "%";
+
+    int EntryLen = Entry.length() + 1;
+    char msg[EntryLen];
+    Entry.toCharArray(msg, EntryLen);
+    RF24NetworkHeader header1(uav);
+    bool ok = network.write(header1, &msg, sizeof(msg));
   }
 }
